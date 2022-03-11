@@ -42,7 +42,7 @@ def main():
                              'effectively excluded via the --include_paths option.')
     parser.add_argument("--repo_path", type=str, dest="repo_path", help="Path to the cloned repo. If provided, git_url will not be used")
     parser.add_argument("--cleanup", dest="cleanup", action="store_true", help="Clean up all temporary result files")
-    parser.add_argument('git_url', type=str, help='URL for secret searching')
+    parser.add_argument('git_url', type=str, help='URL for secret searching',nargs='?')
     parser.set_defaults(regex=False)
     parser.set_defaults(rules={})
     parser.set_defaults(allow={})
@@ -53,6 +53,8 @@ def main():
     parser.set_defaults(repo_path=None)
     parser.set_defaults(cleanup=False)
     args = parser.parse_args()
+    if args.git_url is None and args.repo_path is None:
+        parser.error("Please specify either git_url or repo_path")
     rules = {}
     if args.rules:
         try:
